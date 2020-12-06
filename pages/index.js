@@ -10,7 +10,7 @@ export default function Home() {
 
       <main>
         <h1 className="title">
-          Welcome to <a href="https://github.com/ZaidRehman">Zaid Rehman's</a> Port Folio
+          <a href="https://github.com/ZaidRehman">Zaid Rehman's</a> Port Folio
         </h1>
 
         <p className="description">
