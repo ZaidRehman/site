@@ -1,20 +1,8 @@
 import axios from 'axios'
 import Head from 'next/head'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
-export default function Blogs() {
-  const [blogs, setBlogs] = useState([])
-
-  useEffect(() => {
-    axios.get('https://dev.to/api/articles?username=zaidrehman').then(res => {
-      setBlogs(res.data)
-    })
-    return () => {
-      setBlogs([])
-    }
-  }, [])
-
+export default function Blogs({ blogs }) {
   return (
     <div className="container">
       <Head>
@@ -152,4 +140,22 @@ export default function Blogs() {
       `}</style>
     </div>
   )
+}
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries. See the "Technical details" section.
+export async function getStaticProps() {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  const res = await axios.get('https://dev.to/api/articles?username=zaidrehman')
+  const blogs = await res.data
+
+  // By returning { props: posts }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      blogs,
+    },
+  }
 }

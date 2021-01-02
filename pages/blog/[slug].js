@@ -1,26 +1,9 @@
 import axios from 'axios'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 const ReactMarkdown = require('react-markdown')
 const gfm = require('remark-gfm')
 
-export default function Blog() {
-  const [blog, setBlog] = useState({})
-  const router = useRouter()
-
-  useEffect(() => {
-    if (router.query.slug) {
-      axios.get(`https://dev.to/api/articles/zaidrehman/${router.query.slug}`).then(res => {
-        setBlog(res.data)
-        console.log(res.data)
-      })
-    }
-    return () => {
-      setBlog([])
-    }
-  }, [router.query.slug])
-
+export default function Blog({ blog }) {
   return (
     <div className="container">
       <Head>
@@ -161,3 +144,22 @@ export default function Blog() {
     </div>
   )
 }
+
+// This function gets called at build time on server-side.
+// It won't be called on client-side, so you can even do
+// direct database queries. See the "Technical details" section.
+export async function getServerSideProps(context) {
+  // Call an external API endpoint to get posts.
+  // You can use any data fetching library
+  const res = await axios.get(`https://dev.to/api/articles/zaidrehman/${context.query.slug}`)
+  const blog = await res.data
+
+  // By returning { props: posts }, the Blog component
+  // will receive `posts` as a prop at build time
+  return {
+    props: {
+      blog,
+    },
+  }
+}
+
