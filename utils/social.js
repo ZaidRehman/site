@@ -1,6 +1,6 @@
 export const socialUrls = [
   {
-    link: 'https://twitter.com/indian_gooner_',
+    link: 'https://twitter.com/ZaidRehmanDev',
     name: 'Twitter',
     faIcon: 'fa-twitter',
     title: 'Follow me on Twitter'
